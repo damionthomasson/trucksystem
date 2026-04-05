@@ -4,7 +4,7 @@ use std::os::windows::ffi::OsStrExt;
 use std::ptr;
 use std::thread;
 use std::time::Duration;
-use tauri::{Manager, Emitter};
+use tauri::Emitter; // Removed 'Manager' to fix the warning
 use enigo::{Enigo, Key, KeyboardControllable};
 
 // Official Windows Bindings
@@ -18,12 +18,12 @@ struct TelemetryPayload {
     speed: f32,
     gear: i32,
     rpm: f32,
-    maxRpm: f32,         // Added for the RPM Gauge logic
+    maxRpm: f32, 
     odometer: f32,
     parkBrake: bool,
-    fuel: f32,          // Percentage
-    fuelRange: f32,     // KM
-    fuelAvgCons: f32,   // L/100km
+    fuel: f32,
+    fuelRange: f32,
+    fuelAvgCons: f32,
 }
 
 fn to_wstring(value: &str) -> Vec<u16> {
@@ -65,7 +65,7 @@ fn start_telemetry(app_handle: tauri::AppHandle) {
                 ).unwrap_or(HANDLE::default());
 
                 if handle.0 != 0 { 
-                    println!("✅ SUCCESS! Connected to C++ Memory Map.");
+                    println!("✅ SUCCESS! Connected to SCS Memory Map.");
                     break; 
                 }
                 thread::sleep(Duration::from_secs(2));
@@ -81,8 +81,8 @@ fn start_telemetry(app_handle: tauri::AppHandle) {
                 let gear = ptr::read_unaligned(base_ptr.add(504) as *const i32);
                 let fuel_cap = ptr::read_unaligned(base_ptr.add(704) as *const f32).max(1.0);
                 
-                // Offset 708 is Engine RPM Limit (Max RPM)
-                let max_rpm = ptr::read_unaligned(base_ptr.add(708) as *const f32).max(1.0);
+                // FIXED: Changed variable name to maxRpm to match the struct field exactly
+                let maxRpm = ptr::read_unaligned(base_ptr.add(708) as *const f32).max(1.0);
                 
                 let speed_mps = ptr::read_unaligned(base_ptr.add(948) as *const f32);
                 let rpm = ptr::read_unaligned(base_ptr.add(952) as *const f32);
@@ -97,7 +97,7 @@ fn start_telemetry(app_handle: tauri::AppHandle) {
                     speed: (speed_mps * 3.6).abs(),
                     gear,
                     rpm,
-                    maxRpm: max_rpm,
+                    maxRpm, // This now matches the variable above
                     odometer,
                     parkBrake: park_brake,
                     fuel: (fuel_liters / fuel_cap) * 100.0,
