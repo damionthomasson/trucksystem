@@ -1,7 +1,11 @@
-# Tauri + Vue + TypeScript
+# Truck Telemetry HUD
 
-This template should help get you started developing with Vue 3 and TypeScript in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+A high-performance dashboard for Euro Truck Simulator 2 and American Truck Simulator.
 
-## Recommended IDE Setup
-
-- [VS Code](https://code.visualstudio.com/) + [Vue - Official](https://marketplace.visualstudio.com/items?itemName=Vue.volar) + [Tauri](https://marketplace.visualstudio.com/items?itemName=tauri-apps.tauri-vscode) + [rust-analyzer](https://marketplace.visualstudio.com/items?itemName=rust-lang.rust-analyzer)
+## 🚀 How to Install
+1. **Download the HUD:** Go to the [Releases](https://github.com/YOUR_USERNAME/truck-telemetry-hud/releases) page and download the `.msi` or `.exe`.
+2. **Install the Plugin:** This app **REQUIRES** the SCS Telemetry Plugin to work.
+   - Download `scs-telemetry.dll`.
+   - Place it in: `...\SteamLibrary\steamapps\common\Euro Truck Simulator 2\bin\win_x64\plugins\`
+3. **Run the App:** Launch the HUD, then launch the game. 
+4. **SDK Message:** When the game asks to "Use advanced SDK features," the app will attempt to auto-click **OK** for you.
